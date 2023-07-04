@@ -221,7 +221,7 @@ const Home = () => {
               <p>Benefit #2</p>
             </div>
             <div className="flex">
-              <img src={CheckedBox} alt="" classNameName="mr-1" />
+              <img src={CheckedBox} alt="" className="mr-1" />
               <p>Benefit #3</p>
             </div>
 

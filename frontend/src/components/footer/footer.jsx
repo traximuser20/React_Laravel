@@ -17,9 +17,9 @@ const Footer = () => {
           </h2>
         </div>
 
-        <div toggleElement className="w-full py-4">
+        <div className="w-full py-4">
           <div className="flex justify-between items-center">
-            <div question className="font-montserrat font-medium mr-auto">
+            <div className="font-montserrat font-medium mr-auto">
               Where can I get this HTML template?
             </div>
             <img
@@ -28,18 +28,15 @@ const Footer = () => {
               className="transform transition-transform"
             />
           </div>
-          <div
-            answer
-            className="font-montserrat text-sm font-extralight pb-8 hidden"
-          >
+          <div className="font-montserrat text-sm font-extralight pb-8 hidden">
             You can download it on Gumroad.com
           </div>
         </div>
         <hr className="w-full bg-white" />
 
-        <div toggleElement className="w-full py-4">
+        <div className="w-full py-4">
           <div className="flex justify-between items-center">
-            <div question className="font-montserrat font-medium mr-auto">
+            <div className="font-montserrat font-medium mr-auto">
               Is this HTML template free?
             </div>
             <img
@@ -48,18 +45,15 @@ const Footer = () => {
               className="transform transition-transform"
             />
           </div>
-          <div
-            answer
-            className="font-montserrat text-sm font-extralight pb-8 hidden"
-          >
+          <div className="font-montserrat text-sm font-extralight pb-8 hidden">
             Yes! For you it is free.
           </div>
         </div>
         <hr className="w-full bg-white" />
 
-        <div toggleElement className="w-full py-4">
+        <div className="w-full py-4">
           <div className="flex justify-between items-center">
-            <div question className="font-montserrat font-medium mr-auto">
+            <div className="font-montserrat font-medium mr-auto">
               Am I awesome?
             </div>
             <img
@@ -68,10 +62,7 @@ const Footer = () => {
               className="transform transition-transform"
             />
           </div>
-          <div
-            answer
-            className="font-montserrat text-sm font-extralight pb-8 hidden"
-          >
+          <div className="font-montserrat text-sm font-extralight pb-8 hidden">
             Yes! No doubt about it.
           </div>
         </div>
