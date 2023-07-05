@@ -36,70 +36,87 @@ const List = () => {
 
   const handleView = () => {
     navigate("/view/" + id);
-  }
+  };
 
   return (
-    <div>
-      <section className="mb-44 pb-44">
-        <div className="md:px-32 py-8 w-full">
-          <div className="shadow overflow-hidden rounded border-b border-gray-200">
-            <table className="min-w-full bg-white">
-              <ToastContainer />
-              <thead className="bg-gray-800 text-white">
-                <tr>
-                  <th className="text-left py-3 px-4 uppercase font-semibold text-sm">
-                    S.No#
-                  </th>
-                  <th className="w-1/3 text-left py-3 px-4 uppercase font-semibold text-sm">
-                    Full Name
-                  </th>
-                  <th className="w-1/3 text-left py-3 px-4 uppercase font-semibold text-sm">
-                    Email
-                  </th>
-                  <th className="w-1/3 text-left py-3 px-4 uppercase font-semibold text-sm">
-                    Phone
-                  </th>
-                  <th className="-text-left py-3 px-4 uppercase font-semibold text-sm">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="text-gray-700">
-                {users.map((user, index) => (
-                  <tr key={user.id}>
-                    <td className="text-left py-3 px-4">{index + 1}</td>
-                    <td className="w-1/3 text-left py-3 px-4">{user.name}</td>
-                    <td className="text-left py-3 px-4">
-                      <a
-                        className="hover:text-blue-500"
-                        href="mailto:{user.email}"
-                      >
-                        {user.email}
-                      </a>
-                    </td>
-                    <td className="text-left py-3 px-4">
-                      <a className="hover:text-blue-500" href="tel:622322662">
-                        {user.phone_number}
-                      </a>
-                    </td>
-                    <td className="text-left py-3 px-4">
-                      <div className="flex px-4">
-                        <button 
-                        // onClick={handleView} 
-                        className="w-28 h-8 text-white rounded-md hover:bg-[#5d6169] bg-[#1F2937]">
-                          <Link
-                            className="btn btn-primary"
-                            to={{ pathname: "/view/" + user.id }}
-                          >
-                            View
-                          </Link>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+    <div className="bg-gray-100">
+      <ToastContainer />
+      <section class="antialiased bg-gray-100 text-gray-600 h-screen px-4">
+        <div class="flex flex-col justify-center h-full">
+          <div class="w-full max-w-5xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
+            <header class="px-5 py-4 border-b border-gray-100">
+              <h2 class="font-semibold text-gray-800">Customers</h2>
+            </header>
+            <div class="p-3">
+              <div class="overflow-x-auto">
+                <table class="table-auto w-full">
+                  <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+                    <tr>
+                      <th class="p-2 whitespace-nowrap">
+                        <div class="font-semibold text-left">S.No#</div>
+                      </th>
+                      <th class="p-2 whitespace-nowrap">
+                        <div class="font-semibold text-left">Full Name</div>
+                      </th>
+                      <th class="p-2 whitespace-nowrap">
+                        <div class="font-semibold text-left">Email</div>
+                      </th>
+                      <th class="p-2 whitespace-nowrap">
+                        <div class="font-semibold text-left">Phone Number</div>
+                      </th>
+                      <th class="p-2 whitespace-nowrap">
+                        <div class="font-semibold text-center">Action</div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-sm divide-y divide-gray-100">
+                    {users.map((user, index) => (
+                      <tr key={user.id}>
+                        <td class="p-2 whitespace-nowrap">
+                          <div class="p-2 text-left">{index + 1}</div>
+                        </td>
+                        <td class="p-2 whitespace-nowrap">
+                          <div class="flex items-center">
+                            <div class="w-10 h-10 flex-shrink-0 mr-2 sm:mr-3">
+                              <img
+                                class="rounded-full"
+                                src="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg"
+                                width="40"
+                                height="40"
+                                alt="Alex Shatov"
+                              />
+                            </div>
+                            <div class="font-medium text-gray-800">
+                              {user.name}
+                            </div>
+                          </div>
+                        </td>
+                        <td class="p-2 whitespace-nowrap">
+                          <div class="text-left">{user.email}</div>
+                        </td>
+                        <td class="p-2 whitespace-nowrap">
+                          <div class="text-left font-medium text-green-500">
+                            {user.phone}
+                          </div>
+                        </td>
+                        <td class="p-2 whitespace-nowrap">
+                          <div className="flex mx-auto justify-center px-2">
+                            <Link
+                              className="w-28 h-8 text-white rounded-md hover:bg-[#5d6169] bg-[#1F2937]"
+                              to={{ pathname: "/view/" + user.id }}
+                            >
+                              <button className="text-center align-center py-1 mx-auto">
+                                View
+                              </button>
+                            </Link>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </section>

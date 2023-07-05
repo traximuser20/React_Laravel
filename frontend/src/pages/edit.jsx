@@ -22,13 +22,14 @@ const Edit = () => {
             setInputs({
               name: res.data.name,
               email: res.data.email,
+              phone: res.data.phone,
             }),
           1000
         );
       });
       setTimeout(
         () =>
-          toast.success("Data fetched successfully !", {
+          toast.success("Users fetched successfully !", {
             position: toast.POSITION.TOP_CENTER,
           }),
         1000
@@ -49,10 +50,10 @@ const Edit = () => {
   const handleSubmit = async () => {
     try {
       await api.put("/users/" + id, inputs).then((res) => {
-        toast.success("Data submitted successfully !", {
+        toast.success("User editted successfully !", {
           position: toast.POSITION.TOP_CENTER,
         });
-        setTimeout(() => navigate("/list"), 1000);
+        setTimeout(() => navigate("/list"), 2000);
       });
     } catch (error) {
       toast.error(error.message, {

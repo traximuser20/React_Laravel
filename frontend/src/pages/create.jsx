@@ -26,13 +26,24 @@ const Create = () => {
         toast.success("Data submitted successfully !", {
           position: toast.POSITION.TOP_CENTER,
         });
-        setTimeout(() => navigate("/list"), 5000);
+        setTimeout(() => navigate("/list"), 4000);
         clearStates();
       });
     } catch (error) {
-      toast.error(error.message, {
-        position: toast.POSITION.TOP_CENTER,
-      });
+      console.log(error);
+      if(error.code === "ERR_BAD_RESPONSE") {
+        toast.error("Email already exists", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
+      else if(error.code === "ERR_NETWORK") {
+        setTimeout(() => toast.error("Network error !", {
+          position: toast.POSITION.TOP_CENTER,
+        }), 1000);
+        setTimeout(() => toast.warn("Looks Like your server is offline !", {
+          position: toast.POSITION.TOP_CENTER,
+        }), 2000);
+      }
     }
   };
 

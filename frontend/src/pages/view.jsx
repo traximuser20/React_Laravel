@@ -18,12 +18,17 @@ const View = (props) => {
   const fetchUser = async () => {
     try {
       await api.get("/users/" + id + "/edit").then((res) => {
-        setTimeout(() =>toast.success("Data fetched successfully !", {
-          position: toast.POSITION.TOP_CENTER,
-        }), 1000);
+        setTimeout(
+          () =>
+            toast.success("User fetched successfully !", {
+              position: toast.POSITION.TOP_CENTER,
+            }),
+          1000
+        );
         setInputs({
           name: res.data.name,
           email: res.data.email,
+          phone: res.data.phone,
         });
       });
     } catch (error) {
@@ -47,7 +52,7 @@ const View = (props) => {
   };
 
   return (
-    <div>
+    <div className="bg-gray-100">
       <ToastContainer />
       <section>
         <div className="flex h-screen flex-col items-center justify-center space-y-6 bg-gray-100 px-4 sm:flex-row sm:space-x-6 sm:space-y-0">
@@ -98,14 +103,26 @@ const View = (props) => {
                 onClick={handleDelete}
                 className="flex rounded-md bg-red-500 px-6 py-2 font-semibold text-red-100 shadow-md duration-75 hover:bg-red-400"
               >
-                <FaTrashAlt style={{ color: "#fff", fontSize: "25px", paddingRight: "10px"  }} />
+                <FaTrashAlt
+                  style={{
+                    color: "#fff",
+                    fontSize: "25px",
+                    paddingRight: "10px",
+                  }}
+                />
                 Delete
               </button>
               <button
                 onClick={handleEdit}
                 className="flex rounded-md bg-green-500 px-6 py-2 font-semibold text-green-100 shadow-md duration-75 hover:bg-green-400"
               >
-                <FaEdit style={{ color: "#fff", fontSize: "25px", paddingRight: "10px"  }}/>
+                <FaEdit
+                  style={{
+                    color: "#fff",
+                    fontSize: "25px",
+                    paddingRight: "10px",
+                  }}
+                />
                 Edit
               </button>
             </div>
