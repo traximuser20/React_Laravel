@@ -1,16 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Footer from "../components/footer/footer";
 import api from "../apis/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Create = () => {
+const Edit = () => {
   const [inputs, setInputs] = useState({});
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const clearStates = () => {
-    setInputs({});
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  const fetchUser = async () => {
+    try {
+      await api.get("/users/" + id + "/edit").then((res) => {
+        setTimeout(
+          () =>
+            setInputs({
+              name: res.data.name,
+              email: res.data.email,
+            }),
+          1000
+        );
+      });
+      setTimeout(
+        () =>
+          toast.success("Data fetched successfully !", {
+            position: toast.POSITION.TOP_CENTER,
+          }),
+        1000
+      );
+    } catch (error) {
+      toast.error(error.message, {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
   };
 
   const handleChange = (event) => {
@@ -20,14 +47,12 @@ const Create = () => {
   };
 
   const handleSubmit = async () => {
-    console.log(inputs);
     try {
-      await api.post("/users", inputs).then((res) => {
+      await api.put("/users/" + id, inputs).then((res) => {
         toast.success("Data submitted successfully !", {
           position: toast.POSITION.TOP_CENTER,
         });
-        setTimeout(() => navigate("/list"), 5000);
-        clearStates();
+        setTimeout(() => navigate("/list"), 1000);
       });
     } catch (error) {
       toast.error(error.message, {
@@ -45,21 +70,21 @@ const Create = () => {
             <div className="w-full lg:w-1/2 xl:w-6/12 px-4">
               <div className="max-w-[570px] mb-12 lg:mb-0">
                 {/* <span className="block mb-4 text-base text-primary font-semibold">
-                  Contact Us
-                </span> */}
+                      Contact Us
+                    </span> */}
                 <h2
                   className="
-                  text-dark
-                  mb-6
-                  uppercase
-                  font-bold
-                  text-[32px]
-                  sm:text-[40px]
-                  lg:text-[36px]
-                  xl:text-[40px]
-                  "
+                      text-dark
+                      mb-6
+                      uppercase
+                      font-bold
+                      text-[32px]
+                      sm:text-[40px]
+                      lg:text-[36px]
+                      xl:text-[40px]
+                      "
                 >
-                  GET IN TOUCH WITH US
+                  EDIT YOUR INFORMATION
                 </h2>
                 <p className="text-base text-body-color leading-relaxed mb-9">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
@@ -114,24 +139,24 @@ const Create = () => {
                     />
                   </div>
                   {/* <div className="mb-6">
-                    <textarea
-                      required
-                      rows="6"
-                      placeholder="Your Message"
-                      className="
-                        w-full
-                        rounded
-                        py-3
-                        px-[14px]
-                        text-body-color text-base
-                        border border-[f0f0f0]
-                        resize-none
-                        outline-none
-                        focus-visible:shadow-none
-                        focus:border-primary
-                        "
-                    ></textarea>
-                  </div> */}
+                        <textarea
+                          required
+                          rows="6"
+                          placeholder="Your Message"
+                          className="
+                            w-full
+                            rounded
+                            py-3
+                            px-[14px]
+                            text-body-color text-base
+                            border border-[f0f0f0]
+                            resize-none
+                            outline-none
+                            focus-visible:shadow-none
+                            focus:border-primary
+                            "
+                        ></textarea>
+                      </div> */}
                   <div>
                     <button
                       type="button"
@@ -960,4 +985,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default Edit;

@@ -17,10 +17,10 @@ const Menu = () => {
         Create
       </Link>
       <Link
-        to={"/view"}
+        to={"/list"}
         className="block md:inline-block px-3 py-2 rounded-md hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700"
       >
-        View
+        List
       </Link>
       <Link
         to={"/about"}
