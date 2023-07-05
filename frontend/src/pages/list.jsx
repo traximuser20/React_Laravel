@@ -41,65 +41,65 @@ const List = () => {
   return (
     <div className="bg-gray-100">
       <ToastContainer />
-      <section class="antialiased bg-gray-100 text-gray-600 h-screen px-4">
-        <div class="flex flex-col justify-center h-full">
-          <div class="w-full max-w-5xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
-            <header class="px-5 py-4 border-b border-gray-100">
-              <h2 class="font-semibold text-gray-800">Customers</h2>
+      <section className="antialiased bg-gray-100 text-gray-600 h-screen px-4">
+        <div className="flex flex-col justify-center h-full">
+          <div className="w-full max-w-5xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
+            <header className="px-5 py-4 border-b border-gray-100">
+              <h2 className="font-semibold text-gray-800">Customers</h2>
             </header>
-            <div class="p-3">
-              <div class="overflow-x-auto">
-                <table class="table-auto w-full">
-                  <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+            <div className="p-3">
+              <div className="overflow-x-auto">
+                <table className="table-auto w-full">
+                  <thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
                     <tr>
-                      <th class="p-2 whitespace-nowrap">
-                        <div class="font-semibold text-left">S.No#</div>
+                      <th className="p-2 whitespace-nowrap">
+                        <div className="font-semibold text-left">S.No#</div>
                       </th>
-                      <th class="p-2 whitespace-nowrap">
-                        <div class="font-semibold text-left">Full Name</div>
+                      <th className="p-2 whitespace-nowrap">
+                        <div className="font-semibold text-left">Full Name</div>
                       </th>
-                      <th class="p-2 whitespace-nowrap">
-                        <div class="font-semibold text-left">Email</div>
+                      <th className="p-2 whitespace-nowrap">
+                        <div className="font-semibold text-left">Email</div>
                       </th>
-                      <th class="p-2 whitespace-nowrap">
-                        <div class="font-semibold text-left">Phone Number</div>
+                      <th className="p-2 whitespace-nowrap">
+                        <div className="font-semibold text-left">Phone Number</div>
                       </th>
-                      <th class="p-2 whitespace-nowrap">
-                        <div class="font-semibold text-center">Action</div>
+                      <th className="p-2 whitespace-nowrap">
+                        <div className="font-semibold text-center">Action</div>
                       </th>
                     </tr>
                   </thead>
-                  <tbody class="text-sm divide-y divide-gray-100">
+                  <tbody className="text-sm divide-y divide-gray-100">
                     {users.map((user, index) => (
                       <tr key={user.id}>
-                        <td class="p-2 whitespace-nowrap">
-                          <div class="p-2 text-left">{index + 1}</div>
+                        <td className="p-2 whitespace-nowrap">
+                          <div className="p-2 text-left">{index + 1}</div>
                         </td>
-                        <td class="p-2 whitespace-nowrap">
-                          <div class="flex items-center">
-                            <div class="w-10 h-10 flex-shrink-0 mr-2 sm:mr-3">
+                        <td className="p-2 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <div className="w-10 h-10 flex-shrink-0 mr-2 sm:mr-3">
                               <img
-                                class="rounded-full"
-                                src="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg"
+                                className="rounded-full"
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQLHZh0aF5Og2DF4G19yPVx_QGjXfaBByFZA&usqp=CAU"
                                 width="40"
                                 height="40"
                                 alt="Alex Shatov"
                               />
                             </div>
-                            <div class="font-medium text-gray-800">
+                            <div className="font-medium text-gray-800">
                               {user.name}
                             </div>
                           </div>
                         </td>
-                        <td class="p-2 whitespace-nowrap">
-                          <div class="text-left">{user.email}</div>
+                        <td className="p-2 whitespace-nowrap">
+                          <div className="text-left">{user.email}</div>
                         </td>
-                        <td class="p-2 whitespace-nowrap">
-                          <div class="text-left font-medium text-green-500">
+                        <td className="p-2 whitespace-nowrap">
+                          <div className="text-left font-medium text-green-500">
                             {user.phone}
                           </div>
                         </td>
-                        <td class="p-2 whitespace-nowrap">
+                        <td className="p-2 whitespace-nowrap">
                           <div className="flex mx-auto justify-center px-2">
                             <Link
                               className="w-28 h-8 text-white rounded-md hover:bg-[#5d6169] bg-[#1F2937]"

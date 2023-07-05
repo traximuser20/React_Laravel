@@ -102,6 +102,7 @@ const Edit = () => {
                       Full Name
                     </label>
                     <input
+                      style={{ textTransform: "capitalize" }}
                       name="name"
                       value={inputs.name || ""}
                       onChange={handleChange}

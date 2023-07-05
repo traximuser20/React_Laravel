@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import Footer from "../components/footer/footer";
 import api from "../apis/api";
+import avatar from "../assets/images.jpg";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ImageUploading from "react-images-uploading";
 
 const Create = () => {
+  const [images, setImages] = useState([avatar]);
   const [inputs, setInputs] = useState({});
   const navigate = useNavigate();
 
@@ -31,20 +34,31 @@ const Create = () => {
       });
     } catch (error) {
       console.log(error);
-      if(error.code === "ERR_BAD_RESPONSE") {
+      if (error.code === "ERR_BAD_RESPONSE") {
         toast.error("Email already exists", {
           position: toast.POSITION.TOP_CENTER,
         });
-      }
-      else if(error.code === "ERR_NETWORK") {
-        setTimeout(() => toast.error("Network error !", {
-          position: toast.POSITION.TOP_CENTER,
-        }), 1000);
-        setTimeout(() => toast.warn("Looks Like your server is offline !", {
-          position: toast.POSITION.TOP_CENTER,
-        }), 2000);
+      } else if (error.code === "ERR_NETWORK") {
+        setTimeout(
+          () =>
+            toast.error("Network error !", {
+              position: toast.POSITION.TOP_CENTER,
+            }),
+          1000
+        );
+        setTimeout(
+          () =>
+            toast.warn("Looks Like your server is offline !", {
+              position: toast.POSITION.TOP_CENTER,
+            }),
+          2000
+        );
       }
     }
+  };
+
+  const handleClick = (imageList) => {
+    setImages(imageList);
   };
 
   return (
@@ -81,12 +95,73 @@ const Create = () => {
             </div>
             <div className="w-full lg:w-1/2 xl:w-5/12 px-4">
               <div className="bg-white relative rounded-lg p-8 sm:p-12 shadow-lg">
+                <div>
+                  <ImageUploading
+                    value={images}
+                    onChange={handleClick}
+                    dataURLKey="data_url"
+                    acceptType={["jpg"]}
+                  >
+                    {({
+                      imageList,
+                      onImageUpload,
+                      onImageUpdate,
+                      onImageRemove,
+                      isDragging,
+                      dragProps,
+                    }) => (
+                      <div>
+                        {/* className="w-28 relative order-first md:order-last h-28 md:h-auto flex justify-center items-center border border-dashed border-gray-400 col-span-2 m-2 rounded-full bg-no-repeat bg-center bg-origin-border bg-cover" */}
+                        {/* <div className="w-10 h-10 flex-shrink-0 mr-2 sm:mr-3"> */}
+                        <img
+                          {...dragProps}
+                          style={isDragging ? { background: "#3056D3" } : null}
+                          onClick={onImageUpload}
+                          className="mb-3 w-32 h-32 rounded-full shadow-lg mx-auto flex justify-center items-center border-4 border-dashed border-gray-400 col-span-2 m-2 bg-no-repeat bg-center bg-origin-border bg-cover"
+                          src={
+                            images[0]?.data_url
+                              ? imageList[0]?.data_url
+                              : avatar
+                          }
+                          width="180"
+                          height="180"
+                          alt="Avatar"
+                        />
+                        {images[0]?.data_url ? (
+                          <div className="space-x-4 rounded-l-lg p-4 bg-white flex justify-center items-center">
+                            <button
+                              onClick={() =>
+                                onImageUpdate(imageList[0]?.data_url)
+                              }
+                              className="inline-flex items-center shadow-md my-2 px-2 py-2 bg-gray-900 text-gray-50 border border-transparent
+                                    rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none 
+                                  hover:border-gray-900 hover:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                            >
+                              Change Image
+                            </button>
+                            <button
+                              onClick={() =>
+                                onImageRemove(imageList[0]?.data_url)
+                              }
+                              className="inline-flex items-center shadow-md my-2 px-2 py-2 bg-gray-900 text-gray-50 border border-transparent
+                                    rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none 
+                                    hover:border-gray-900 hover:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                            >
+                              Remove Image
+                            </button>
+                          </div>
+                        ) : null}
+                      </div>
+                    )}
+                  </ImageUploading>
+                </div>
                 <form>
                   <div className="mb-6">
                     <label className="text-start block mb-2 text-base font-medium">
                       Full Name
                     </label>
                     <input
+                      style={{ textTransform: "capitalize" }}
                       name="name"
                       value={inputs.name || ""}
                       onChange={handleChange}
