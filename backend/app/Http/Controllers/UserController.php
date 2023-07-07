@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
 {
@@ -14,6 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
+        // $user = User::latest()->get();
+        // return response()->json(['users' => $users], 200);
         return response()->json(User::latest()->get());
     }
 
@@ -35,12 +38,36 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        User::create([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'phone'=>$request->phone,
-        ]);
-        return response()->json('successfully created');
+        // User::create([
+        //     'name'=>$request->name,
+        //     'email'=>$request->email,
+        //     'phone'=>$request->phone,
+        // ]);
+        // return response()->json('successfully created');
+
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        if($request->image!="")
+        {
+            $strpos = strpos($request->image, ';');
+            $substring = substr($request->image, 0, $strpos);
+            $ext = explode('/', $substring)[1];
+            // $image = str_replace('data:image/' . $ext . ';base64,', '', $request->image);
+            $name = time() . '.' . $ext;
+            $img = Image::make($request->image)->resize(117,100);
+            $upload_path = public_path().'/images/';
+            // $user->image = $request->image;
+            $img->save($upload_path . $name);
+            $user->image = $name;
+        }
+        else 
+        {
+            $user->image = $request->image;
+        }
+        // $user->file_path=$request->file('file')->store('images');
+        $user->save(); 
     }
 
     /**
@@ -83,6 +110,29 @@ class UserController extends Controller
 
         ]);
         return response()->json('success');
+
+        // $user = new User();
+        // $user->name = $request->name;
+        // $user->email = $request->email;
+        // $user->phone = $request->phone;
+        // if($request->image!="")
+        // {
+        //     $strpos = strpos($request->image, ';');
+        //     $substring = substr($request->image, 0, $strpos);
+        //     $ext = explode('/', $substring)[1];
+        //     // $image = str_replace('data:image/' . $ext . ';base64,', '', $request->image);
+        //     $name = time() . '.' . $ext;
+        //     $img = Image::make($request->image)->resize(117,100);
+        //     $upload_path = public_path().'images/';
+        //     // $user->image = $request->image;
+        //     $img->save($upload_path . $name);
+        //     $user->image = $name;
+        // }
+        // else 
+        // {
+        //     $user->image = $request->image;
+        // }
+        // $user->save(); 
     }
 
     /**

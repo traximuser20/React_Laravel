@@ -32,6 +32,7 @@ const View = (props) => {
         });
       });
     } catch (error) {
+      console.log(error);
       toast.error(error.message, {
         position: toast.POSITION.TOP_CENTER,
       });
@@ -43,7 +44,7 @@ const View = (props) => {
       toast.error("Deleted Successfully !", {
         position: toast.POSITION.TOP_CENTER,
       });
-      setTimeout(() => navigate("/list"), 5000);
+      setTimeout(() => navigate("/users"), 5000);
     });
   };
 
@@ -81,7 +82,7 @@ const View = (props) => {
                 </p>
               </div>
               <div className="flex justify-center space-x-4">
-                <button className="bg-green-500 hover:bg-green-400 flex px-8 py-2 mt-8 rounded-3xl text-gray-100 font-semibold uppercase tracking-wide">
+                <button onClick={handleEdit} className="bg-green-500 hover:bg-green-400 flex px-8 py-2 mt-8 rounded-3xl text-gray-100 font-semibold uppercase tracking-wide">
                   <FaEdit
                     style={{
                       color: "#fff",
@@ -91,7 +92,7 @@ const View = (props) => {
                   />
                   Edit
                 </button>
-                <button className="bg-red-500 hover:bg-red-400 flex px-8 py-2 mt-8 rounded-3xl text-gray-100 font-semibold uppercase tracking-wide">
+                <button onClick={handleDelete} className="bg-red-500 hover:bg-red-400 flex px-8 py-2 mt-8 rounded-3xl text-gray-100 font-semibold uppercase tracking-wide">
                   <FaTrashAlt
                     style={{
                       color: "#fff",

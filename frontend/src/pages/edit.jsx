@@ -4,9 +4,14 @@ import api from "../apis/api";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import avatar from "../assets/avatar.png";
+import { FaTrashAlt } from "react-icons/fa";
+import axios from "axios";
 
 const Edit = () => {
+  const profilePic = avatar;
   const [inputs, setInputs] = useState({});
+  const [images, setImages] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -47,20 +52,71 @@ const Edit = () => {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
       await api.put("/users/" + id, inputs).then((res) => {
         toast.success("User editted successfully !", {
           position: toast.POSITION.TOP_CENTER,
         });
-        setTimeout(() => navigate("/list"), 2000);
+        setTimeout(() => navigate("/users"), 2000);
       });
     } catch (error) {
+      console.log(error);
       toast.error(error.message, {
         position: toast.POSITION.TOP_CENTER,
       });
     }
   };
+
+  const handleImageSelect = () => {
+    document.getElementById("imageSelect").click();
+  };
+
+  const handleImage = (event) => {
+    const file = event.target.files[0];
+    // const reader = new FileReader();
+    // reader.readAsDataURL(file);
+    // reader.onloadend = () => {
+    //   toast.success("Image uploaded successfully !", {
+    //     position: toast.POSITION.TOP_CENTER,
+    //   });
+    //   setImage([reader.result]);
+    // };
+    console.log(file);
+    setImages(file);
+    uploadImage();
+  };
+
+  const config = {
+    headers: {
+      "content-type": "multipart/form-data",
+    },
+  };
+
+  const uploadImage = async () => {
+    const fileImage = new FormData();
+    fileImage.append("image", images);
+    try {
+      await axios.post("http://localhost:8000/api/users/" + id, fileImage, config).then((res) => {
+        toast.success("Image uploaded successfully !", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        setTimeout(() => navigate("/users"), 2000);
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message, {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
+
+  const handleImageRemove = () => {
+    setImages(null);
+  };
+
+  // console.log("image", image);
 
   return (
     <div>
@@ -96,7 +152,48 @@ const Edit = () => {
             </div>
             <div className="w-full lg:w-1/2 xl:w-5/12 px-4">
               <div className="bg-white relative rounded-lg p-8 sm:p-12 shadow-lg">
-                <form>
+              <div>
+                  <button
+                    title="Click to upload an image"
+                    onClick={handleImageSelect}
+                  >
+                    <img
+                      // {...dragProps}
+                      // style={isDragging ? { background: "#3056D3" } : null}
+                      // onClick={onImageUpload}
+                      className="mb-3 w-32 h-32 rounded-full shadow-lg mx-auto flex justify-center items-center border-4 border-dashed border-transparent col-span-2 m-2 bg-no-repeat bg-center bg-origin-border bg-cover"
+                      src={images ? images : profilePic}
+                      alt=""
+                    />
+                  </button>
+
+                  {images ? (
+                    <div className="absolute top-36 bottom-0 right-0 left-20">
+                      {/* <button
+                              onClick={() =>
+                                onImageUpdate(imageList[0]?.data_url)
+                              }
+                              className="inline-flex items-center shadow-md my-2 px-2 py-2 bg-gray-900 text-gray-50 border border-transparent
+                                    rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none 
+                                  hover:border-gray-900 hover:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                            >
+                              Change Image
+                            </button> */}
+                      <button
+                        onClick={() => handleImageRemove()}
+                        className="rounded-full shadow-lg my-2 px-2 py-2 bg-white border border-transparent"
+                        //   className="inline-flex items-center shadow-md my-2 px-2 py-2 bg-gray-900 text-gray-50 border border-transparent
+                        //         rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none
+                        //         hover:border-gray-900 hover:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
+                      >
+                        <FaTrashAlt
+                          style={{ color: "#FF495F", fontSize: "20px" }}
+                        />
+                      </button>
+                    </div>
+                  ) : null}
+                </div>
+                <form className="form-control">
                   <div className="mb-6">
                     <label className="text-start block mb-2 text-base font-medium">
                       Full Name
@@ -138,6 +235,19 @@ const Edit = () => {
                       type="text"
                       placeholder="Your Phone"
                       className="focus:border-[#3056D3] w-full rounded py-3 px-[14px] text-body-color text-base border border-[#f0f0f0] outline-none focus-visible:shadow-md focus:border-primary"
+                    />
+                  </div>
+                  <div style={{ display: "none" }}>
+                    <label className="text-start block mb-2 text-base font-medium">
+                      Profile Image
+                    </label>
+                    <input
+                      type="file"
+                      id="imageSelect"
+                      onChange={(e) => {
+                        handleImage(e);
+                      }}
+                      className=" mb-4 w-full rounded py-3 px-[14px] text-body-color text-base border border-[#f0f0f0] outline-none focus-visible:shadow-md focus:border-primary"
                     />
                   </div>
                   {/* <div className="mb-6">

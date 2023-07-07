@@ -1,64 +1,150 @@
 import React, { useState } from "react";
 import Footer from "../components/footer/footer";
 import api from "../apis/api";
-import avatar from "../assets/images.jpg";
+import avatar from "../assets/avatar.png";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ImageUploading from "react-images-uploading";
+import { FaTrashAlt } from "react-icons/fa";
+import axios from "axios";
 
 const Create = () => {
-  const [images, setImages] = useState([avatar]);
-  const [inputs, setInputs] = useState({});
+  const defaultPic = avatar;
+  const [images, setImages] = useState(null);
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userPhone, setUserPhone] = useState("");
   const navigate = useNavigate();
 
   const clearStates = () => {
-    setInputs({});
+    setImages(null);
+    setUserName("");
+    setUserEmail("");
+    setUserPhone("");
   };
 
-  const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setInputs((values) => ({ ...values, [name]: value }));
+  // const handleChange = (event) => {
+  //   const name = event.target.name;
+  //   const value = event.target.value;
+  //   setInputs((values) => ({ ...values, [name]: value }));
+  // };
+
+  // const handleSubmit = async () => {
+  //   // console.log(inputs);
+  //   try {
+  //     await api.post("/users",).then((res) => {
+  //       toast.success("Data submitted successfully !", {
+  //         position: toast.POSITION.TOP_CENTER,
+  //       });
+  //       setTimeout(() => navigate("/users"), 4000);
+  //       clearStates();
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //     if (error.code === "ERR_BAD_RESPONSE") {
+  //       toast.error("Something went wrong", {
+  //         position: toast.POSITION.TOP_CENTER,
+  //       });
+  //       setTimeout(
+  //         () =>
+  //           toast.warn("Looks Like you have made a mistake !", {
+  //             position: toast.POSITION.TOP_CENTER,
+  //           }),
+  //         1000
+  //       );
+  //     } else if (error.code === "ERR_NETWORK") {
+  //       setTimeout(
+  //         () =>
+  //           toast.error(" Network Error !", {
+  //             position: toast.POSITION.TOP_CENTER,
+  //           }),
+  //         1000
+  //       );
+  //     }
+  //   }
+  // };
+
+  const handleImageRemove = () => {
+    setImages(null);
   };
 
-  const handleSubmit = async () => {
-    console.log(inputs);
+  // const handleClick = (imageList) => {
+  //   setImages(imageList);
+  // };
+
+  const handleImageSelect = () => {
+    document.getElementById("imageSelect").click();
+  };
+
+  const handleImage = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    let limit = 1024 * 1024 * 10;
+    if (file.size > limit) {
+      toast.error("Image size should be less than 10MB", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+    reader.onloadend = (file) => {
+      toast.success("Image uploaded successfully !", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      setImages(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const config = {
+    headers: {
+      "content-type": "multipart/form-data",
+    },
+  };
+
+  const createUser = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("name", userName);
+    formData.append("email", userEmail);
+    formData.append("phone", userPhone);
+    formData.append("image", images);
     try {
-      await api.post("/users", inputs).then((res) => {
+      await api.post("/users", formData).then((res) => {
+        clearStates();
         toast.success("Data submitted successfully !", {
           position: toast.POSITION.TOP_CENTER,
         });
-        setTimeout(() => navigate("/list"), 4000);
+        setTimeout(() => navigate("/users"), 4000);
         clearStates();
       });
     } catch (error) {
       console.log(error);
       if (error.code === "ERR_BAD_RESPONSE") {
-        toast.error("Email already exists", {
+        toast.error("Something went wrong", {
           position: toast.POSITION.TOP_CENTER,
         });
-      } else if (error.code === "ERR_NETWORK") {
         setTimeout(
           () =>
-            toast.error("Network error !", {
+            toast.warn("Looks Like you have made a mistake !", {
               position: toast.POSITION.TOP_CENTER,
             }),
           1000
         );
+      } else if (error.code === "ERR_NETWORK") {
         setTimeout(
           () =>
-            toast.warn("Looks Like your server is offline !", {
+            toast.error(" Network Error !", {
               position: toast.POSITION.TOP_CENTER,
             }),
-          2000
+          1000
         );
       }
+      else
+      {
+        toast.error(error.message, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
     }
-  };
-
-  const handleClick = (imageList) => {
-    setImages(imageList);
   };
 
   return (
@@ -69,9 +155,6 @@ const Create = () => {
           <div className="flex flex-wrap lg:justify-between -mx-4">
             <div className="w-full lg:w-1/2 xl:w-6/12 px-4">
               <div className="max-w-[570px] mb-12 lg:mb-0">
-                {/* <span className="block mb-4 text-base text-primary font-semibold">
-                  Contact Us
-                </span> */}
                 <h2
                   className="
                   text-dark
@@ -95,111 +178,102 @@ const Create = () => {
             </div>
             <div className="w-full lg:w-1/2 xl:w-5/12 px-4">
               <div className="bg-white relative rounded-lg p-8 sm:p-12 shadow-lg">
-                <div>
-                  <ImageUploading
-                    value={images}
-                    onChange={handleClick}
-                    dataURLKey="data_url"
-                    acceptType={["jpg"]}
+                <div className="">
+                  <button
+                    className="align-center"
+                    title="Click to upload an image"
+                    onClick={handleImageSelect}
                   >
-                    {({
-                      imageList,
-                      onImageUpload,
-                      onImageUpdate,
-                      onImageRemove,
-                      isDragging,
-                      dragProps,
-                    }) => (
-                      <div>
-                        {/* className="w-28 relative order-first md:order-last h-28 md:h-auto flex justify-center items-center border border-dashed border-gray-400 col-span-2 m-2 rounded-full bg-no-repeat bg-center bg-origin-border bg-cover" */}
-                        {/* <div className="w-10 h-10 flex-shrink-0 mr-2 sm:mr-3"> */}
-                        <img
-                          {...dragProps}
-                          style={isDragging ? { background: "#3056D3" } : null}
-                          onClick={onImageUpload}
-                          className="mb-3 w-32 h-32 rounded-full shadow-lg mx-auto flex justify-center items-center border-4 border-dashed border-gray-400 col-span-2 m-2 bg-no-repeat bg-center bg-origin-border bg-cover"
-                          src={
-                            images[0]?.data_url
-                              ? imageList[0]?.data_url
-                              : avatar
-                          }
-                          width="180"
-                          height="180"
-                          alt="Avatar"
+                    <img
+                      className="mb-3 w-32 h-32 rounded-full shadow-lg mx-auto flex justify-center items-center border-4 border-dashed border-transparent col-span-2 m-2 bg-no-repeat bg-center bg-origin-border bg-cover"
+                      src={images ? images : defaultPic}
+                      alt=""
+                    />
+                  </button>
+
+                  {images ? (
+                    <div className="mx-auto justify-end relative top-[-12] bottom-12 right-0 left-8 max-w-sm">
+                      <button
+                        onClick={() => handleImageRemove()}
+                        className="rounded-full shadow-xl my-2 px-2 py-2 bg-white border border-transparent"
+                      >
+                        <FaTrashAlt
+                          style={{ color: "#FF495F", fontSize: "20px" }}
                         />
-                        {images[0]?.data_url ? (
-                          <div className="space-x-4 rounded-l-lg p-4 bg-white flex justify-center items-center">
-                            <button
-                              onClick={() =>
-                                onImageUpdate(imageList[0]?.data_url)
-                              }
-                              className="inline-flex items-center shadow-md my-2 px-2 py-2 bg-gray-900 text-gray-50 border border-transparent
-                                    rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none 
-                                  hover:border-gray-900 hover:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                            >
-                              Change Image
-                            </button>
-                            <button
-                              onClick={() =>
-                                onImageRemove(imageList[0]?.data_url)
-                              }
-                              className="inline-flex items-center shadow-md my-2 px-2 py-2 bg-gray-900 text-gray-50 border border-transparent
-                                    rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none 
-                                    hover:border-gray-900 hover:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"
-                            >
-                              Remove Image
-                            </button>
-                          </div>
-                        ) : null}
-                      </div>
-                    )}
-                  </ImageUploading>
+                      </button>
+                    </div>
+                  ) : null}
                 </div>
-                <form>
-                  <div className="mb-6">
-                    <label className="text-start block mb-2 text-base font-medium">
-                      Full Name
-                    </label>
-                    <input
-                      style={{ textTransform: "capitalize" }}
-                      name="name"
-                      value={inputs.name || ""}
-                      onChange={handleChange}
-                      required
-                      type="text"
-                      placeholder="Your Name"
-                      className="focus:border-[#3056D3] w-full rounded py-3 px-[14px] text-body-color text-base border border-[#f0f0f0] outline-none focus-visible:shadow-md focus:border-primary"
-                    />
+                <div className="">
+                  <div style={{ display: "none" }}>
+                    <div className="mb-6">
+                      <label className="text-start block mb-2 text-base font-medium">
+                        Profile Image
+                      </label>
+                      <input
+                        type="file"
+                        id="imageSelect"
+                        onChange={(e) => {
+                          handleImage(e);
+                        }}
+                        className=" mb-4 w-full rounded py-3 px-[14px] text-body-color text-base border border-[#f0f0f0] outline-none focus-visible:shadow-md focus:border-primary"
+                      />
+                    </div>
                   </div>
-                  <div className="mb-6">
-                    <label className="text-start block mb-2 text-base font-medium">
-                      Email
-                    </label>
+                  <div>
+                    <div className="mb-6">
+                      <label className="text-start block mb-2 text-base font-medium">
+                        Full Name
+                      </label>
+                      <input
+                        style={{ textTransform: "capitalize" }}
+                        value={userName}
+                        onChange={(e) => {
+                          setUserName(e.target.value);
+                        }}
+                        required
+                        type="text"
+                        placeholder="Your Name"
+                        className="focus:border-[#3056D3] w-full rounded py-3 px-[14px] text-body-color text-base border border-[#f0f0f0] outline-none focus-visible:shadow-md focus:border-primary"
+                      />
+                    </div>
+                    <div className="mb-6">
+                      <label className="text-start block mb-2 text-base font-medium">
+                        Email
+                      </label>
+                      <input
+                        value={userEmail}
+                        onChange={(e) => {
+                          setUserEmail(e.target.value);
+                        }}
+                        required
+                        type="email"
+                        placeholder="Your Email"
+                        className="focus:border-[#3056D3] w-full rounded py-3 px-[14px] text-body-color text-base border border-[#f0f0f0] outline-none focus-visible:shadow-md focus:border-primary"
+                      />
+                    </div>
+                    <div className="mb-6">
+                      <label className="text-start block mb-2 text-base font-medium">
+                        Phone
+                      </label>
+                      <input
+                        name="phone"
+                        value={userPhone}
+                        onChange={(e) => {
+                          setUserPhone(e.target.value);
+                        }}
+                        required
+                        type="text"
+                        placeholder="Your Phone"
+                        className="focus:border-[#3056D3] w-full rounded py-3 px-[14px] text-body-color text-base border border-[#f0f0f0] outline-none focus-visible:shadow-md focus:border-primary"
+                      />
+                    </div>
                     <input
-                      name="email"
-                      value={inputs.email || ""}
-                      onChange={handleChange}
-                      required
-                      type="email"
-                      placeholder="Your Email"
-                      className="focus:border-[#3056D3] w-full rounded py-3 px-[14px] text-body-color text-base border border-[#f0f0f0] outline-none focus-visible:shadow-md focus:border-primary"
+                      type="file"
+                      name="image"
+                      style={{ display: "none" }}
                     />
-                  </div>
-                  <div className="mb-6">
-                    <label className="text-start block mb-2 text-base font-medium">
-                      Phone
-                    </label>
-                    <input
-                      name="phone"
-                      value={inputs.phone || ""}
-                      onChange={handleChange}
-                      required
-                      type="text"
-                      placeholder="Your Phone"
-                      className="focus:border-[#3056D3] w-full rounded py-3 px-[14px] text-body-color text-base border border-[#f0f0f0] outline-none focus-visible:shadow-md focus:border-primary"
-                    />
-                  </div>
-                  {/* <div className="mb-6">
+                    {/* <div className="mb-6">
                     <textarea
                       required
                       rows="6"
@@ -218,16 +292,16 @@ const Create = () => {
                         "
                     ></textarea>
                   </div> */}
-                  <div>
-                    <button
-                      type="button"
-                      onClick={handleSubmit}
-                      className="bg-[#3056D3] w-full text-white bg-primary rounded border border-primary p-3 transition hover:bg-opacity-90 hover:shadow-md"
-                    >
-                      Submit
-                    </button>
+                    <div>
+                      <button
+                        onClick={(ev) => createUser(ev)}
+                        className="bg-[#3056D3] w-full text-white bg-primary rounded border border-primary p-3 transition hover:bg-opacity-90 hover:shadow-md"
+                      >
+                        Submit
+                      </button>
+                    </div>
                   </div>
-                </form>
+                </div>
                 <div>
                   <span className="absolute -top-10 -right-9 z-[-1]">
                     <svg

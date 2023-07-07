@@ -17,7 +17,7 @@ const Footer = () => {
           </h2>
         </div>
 
-        <div className="w-full py-4">
+        <div className="w-full py-4 px-3">
           <div className="flex justify-between items-center">
             <div className="font-montserrat font-medium mr-auto">
               Where can I get this HTML template?
@@ -34,7 +34,7 @@ const Footer = () => {
         </div>
         <hr className="w-full bg-white" />
 
-        <div className="w-full py-4">
+        <div className="w-full py-4 px-3">
           <div className="flex justify-between items-center">
             <div className="font-montserrat font-medium mr-auto">
               Is this HTML template free?
@@ -51,7 +51,7 @@ const Footer = () => {
         </div>
         <hr className="w-full bg-white" />
 
-        <div className="w-full py-4">
+        <div className="w-full py-4 px-3">
           <div className="flex justify-between items-center">
             <div className="font-montserrat font-medium mr-auto">
               Am I awesome?
@@ -72,7 +72,7 @@ const Footer = () => {
       {/* <!-- Footer --> */}
       <section className="bg-black sectionSize w-full">
         <div className="mb-4 flex justify-center pt-4">
-          <img src={Logo_white} alt="Logo" className="h-4" />
+          {/* <img src={Logo_white} alt="Logo" className="h-4" /> */}
         </div>
         <div className="flex mb-8 justify-center">
           <a href="#">

@@ -5,7 +5,7 @@ import Footer from "../components/footer/footer";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const List = () => {
+const Users = () => {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -43,9 +43,9 @@ const List = () => {
       <ToastContainer />
       <section className="antialiased bg-gray-100 text-gray-600 h-screen px-4">
         <div className="flex flex-col justify-center h-full">
-          <div className="w-full max-w-5xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
+          <div className="w-full max-w-5xl mx-auto bg-white shadow-xl rounded-sm border border-gray-200">
             <header className="px-5 py-4 border-b border-gray-100">
-              <h2 className="font-semibold text-gray-800">Customers</h2>
+              <h2 className="font-semibold text-gray-800">Users</h2>
             </header>
             <div className="p-3">
               <div className="overflow-x-auto">
@@ -80,10 +80,10 @@ const List = () => {
                             <div className="w-10 h-10 flex-shrink-0 mr-2 sm:mr-3">
                               <img
                                 className="rounded-full"
-                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQLHZh0aF5Og2DF4G19yPVx_QGjXfaBByFZA&usqp=CAU"
+                                src={user.image ? `../../../backend/public/images/${user.image}` :"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQLHZh0aF5Og2DF4G19yPVx_QGjXfaBByFZA&usqp=CAU"}
                                 width="40"
                                 height="40"
-                                alt="Alex Shatov"
+                                alt=""
                               />
                             </div>
                             <div className="font-medium text-gray-800">
@@ -105,9 +105,11 @@ const List = () => {
                               className="w-28 h-8 text-white rounded-md hover:bg-[#5d6169] bg-[#1F2937]"
                               to={{ pathname: "/view/" + user.id }}
                             >
+                              <div className="hover:scale-125">
                               <button className="text-center align-center py-1 mx-auto">
                                 View
                               </button>
+                              </div>
                             </Link>
                           </div>
                         </td>
@@ -125,4 +127,4 @@ const List = () => {
   );
 };
 
-export default List;
+export default Users;
